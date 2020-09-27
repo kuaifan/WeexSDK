@@ -26,15 +26,17 @@ apply plugin: 'checkstyle'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
-apply from: 'buildSrc/jcenter.gradle'
+//eeui dev start
+//apply from: 'buildSrc/jcenter.gradle'
 apply from: 'buildSrc/unstripped.gradle'
 apply from: 'buildSrc/checkStyle.gradle'
 apply from: 'buildSrc/download_jsc.gradle'
 apply from: 'buildSrc/packageName.gradle'
 apply from: 'buildSrc/asan.gradle'
 
-version = project.weexVersion
-group = project.groupId
+version = project.weex_sdkLibVersion
+group = 'org.apache.weex'
+//eeui dev end
 
 //Check version, the version must have 4 sections. The leading three section must be number, and the last section is odd number with or without suffix string.
 if (!project.hasProperty('ignoreVersionCheck') || !project.getProperty('ignoreVersionCheck').equals("true")) {
@@ -235,12 +237,17 @@ android {
 }
 
 dependencies {
+    //eeui dev start
     //noinspection GradleDependency
-    compileOnly "com.android.support:recyclerview-v7:${project.supportLibVersion}"
+    //compileOnly "com.android.support:recyclerview-v7:${project.supportLibVersion}"
     //noinspection GradleDependency
-    compileOnly "com.android.support:support-v4:${project.supportLibVersion}"
+    //compileOnly "com.android.support:support-v4:${project.supportLibVersion}"
     //noinspection GradleDependency
-    compileOnly "com.android.support:appcompat-v7:${project.supportLibVersion}"
+    //compileOnly "com.android.support:appcompat-v7:${project.supportLibVersion}"
+    compileOnly "androidx.legacy:legacy-support-v4:${project.supportv4Version}"
+    compileOnly "androidx.appcompat:appcompat:${project.appcompatVersion}"
+    compileOnly "androidx.recyclerview:recyclerview:${project.recyclerviewVersion}"
+    //eeui dev end
     compileOnly "com.alibaba:fastjson:${project.fastjsonLibVersion}"
 
     testImplementation "com.alibaba:fastjson:${project.fastjsonLibVersion}"
@@ -290,5 +297,9 @@ task weex_core_license(type: com.hierynomus.gradle.license.tasks.LicenseFormat) 
                      'Source/include/JavaScriptCore/**/*.cpp'])
 }
 
-preBuild.dependsOn licenseFormat, copyJSCHeaderToWeexCore
-clean.dependsOn cleanCopyJSCHeaderToWeexCore
+//eeui dev start
+//preBuild.dependsOn licenseFormat, copyJSCHeaderToWeexCore
+//clean.dependsOn cleanCopyJSCHeaderToWeexCore
+preBuild.dependsOn licenseFormat
+clean.dependsOn
+//eeui dev end

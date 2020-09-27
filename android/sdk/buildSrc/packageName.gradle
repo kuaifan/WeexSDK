@@ -16,7 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-task copyAndRenamePackage(type: Copy) {
+
+//eeui dev start
+/*task copyAndRenamePackage(type: Copy) {
     if(!project.useApachePackageName) {
         inputs.dir new File('src/main/java/org/apache/weex')
         from new File('src/main/java/org/apache/weex')
@@ -31,7 +33,51 @@ task copyAndRenamePackage(type: Copy) {
             })
         }
     }
+}*/
+task copyAndRenamePackage(type: Copy) {
+    if(!project.useApachePackageName) {
+        def androidxArray = [
+                ['android.support.v4.view.animation.FastOutSlowInInterpolator', 'androidx.interpolator.view.animation.FastOutSlowInInterpolator'],
+                ['android.support.v7.widget.helper.ItemTouchHelper', 'androidx.recyclerview.widget.ItemTouchHelper'],
+                ['android.support.v7.widget.SwitchCompat', 'androidx.appcompat.widget.SwitchCompat'],
+                ['android.support.v7.widget.PopupMenu', 'androidx.appcompat.widget.PopupMenu'],
+                ['android.support.v4.app.ActivityCompat', 'androidx.core.app.ActivityCompat'],
+                ['android.support.v4.content.ContextCompat', 'androidx.core.content.ContextCompat'],
+                ['android.support.v7.app.AlertDialog', 'androidx.appcompat.app.AlertDialog'],
+                ['android.support.v7.app.AppCompatActivity', 'androidx.appcompat.app.AppCompatActivity'],
+                ['android.support.v4.content.res.ResourcesCompat', 'androidx.core.content.res.ResourcesCompat'],
+                ['android.support.v4.util.ArrayMap', 'androidx.collection.ArrayMap'],
+                ['android.support.v4.util.SimpleArrayMap', 'androidx.collection.SimpleArrayMap'],
+                ['android.support.v4.util.LruCache', 'androidx.collection.LruCache'],
+                ['android.support.v4.content.LocalBroadcastManager', 'androidx.localbroadcastmanager.content.LocalBroadcastManager'],
+                ['android.support.v4.view.ViewPager', 'androidx.viewpager.widget.ViewPager'],
+                ['android.support.v4.view.PagerAdapter', 'androidx.viewpager.widget.PagerAdapter'],
+                ['android.support.v7.app.ActionBar', 'androidx.appcompat.app.ActionBar'],
+        ]
+        inputs.dir new File('src/main/java/org/apache/weex')
+        from new File('src/main/java/org/apache/weex')
+        into new File('src/legacyRelease/java/com/taobao/weex')
+        filter { String line ->
+            line = line.replaceAll(/^(package org\.apache)(\.weex.*)$/, { _, packageName, suffix ->
+                "package com.taobao${suffix}"
+            }).replaceAll(/^(import org\.apache)(\.weex.*)$/, { _, packageName, suffix ->
+                "import com.taobao${suffix}"
+            }).replaceAll(/^(import static org\.apache)(\.weex.*)$/, { _, packageName, suffix ->
+                "import static com.taobao${suffix}"
+            })
+            androidxArray.each { List<String> temp -> line = line.replaceAll(temp[0], temp[1]) }
+            line = line.replaceAll(/^(import android\.support\.v7)(\.widget.*)$/, { _, packageName, suffix ->
+                "import androidx.recyclerview${suffix}"
+            }).replaceAll(/^(import android\.support\.v4)(\.view.*)$/, { _, packageName, suffix ->
+                "import androidx.core${suffix}"
+            }).replaceAll(/^(import android\.support)(\.annotation.*)$/, { _, packageName, suffix ->
+                "import androidx${suffix}"
+            })
+            return line
+        }
+    }
 }
+//eeui dev end
 
 task copyManifest(type: Copy){
     if(!project.useApachePackageName){
@@ -60,9 +106,11 @@ task copyProguard(type: Copy){
     }
 }
 
-task(cleanCopyProguard, overwrite: true, type: Delete){
+//eeui dev start
+/*task(cleanCopyProguard, overwrite: true, type: Delete){
     delete 'proguard-rules-legacy.pro'
-}
+}*/
+//eeui dev end
 
 task copyOtherCppFile(type: Copy){
     if(!project.useApachePackageName) {
@@ -98,5 +146,7 @@ gradle.taskGraph.beforeTask { Task task ->
     }
 }
 
+//eeui dev start
 preBuild.dependsOn copyAndRenameCppSourceFile, copyAndRenamePackage, copyManifest, copyProguard
-clean.dependsOn cleanCopyAndRenamePackage, cleanCopyManifest, cleanCopyProguard, cleanCopyOtherCppFile, cleanCopyAndRenameCppSourceFile
+clean.dependsOn cleanCopyAndRenamePackage, cleanCopyManifest,/* cleanCopyProguard,*/ cleanCopyOtherCppFile, cleanCopyAndRenameCppSourceFile
+//eeui dev end

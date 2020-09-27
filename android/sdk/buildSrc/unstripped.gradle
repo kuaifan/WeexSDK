@@ -50,7 +50,8 @@ def processNativeLibs = { unstripped, stripped ->
     }
 }
 
-afterEvaluate { project ->
+//eeui dev start
+/*afterEvaluate { project ->
     transformNativeLibsWithStripDebugSymbolForRelease.doLast {
         processNativeLibs transformNativeLibsWithMergeJniLibsForRelease,
                 transformNativeLibsWithStripDebugSymbolForRelease
@@ -65,4 +66,5 @@ afterEvaluate { project ->
         processNativeLibs transformNativeLibsWithMergeJniLibsForLegacyRelease,
                 transformNativeLibsWithStripDebugSymbolForLegacyRelease
     }
-}
+}*/
+//eeui dev end
