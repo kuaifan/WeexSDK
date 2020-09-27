@@ -30,6 +30,11 @@
 #import "WXComponent+Layout.h"
 #import "WXComponent_internal.h"
 
+//eeui dev
+#import "CustomWeexSDKManager.h"
+#define iPhoneXSeries (([[UIApplication sharedApplication] statusBarFrame].size.height == 44.0f) ? (YES):(NO))
+
+
 @interface WXEditComponent()
 {
     CGFloat _upriseOffset; // additional space when edit is lifted by keyboard
@@ -757,6 +762,7 @@ WX_EXPORT_METHOD(@selector(setTextFormatter:))
     }
 }
 
+//eeui dev
 - (void)setViewMovedUp:(BOOL)movedUp
 {
     UIView *rootView = self.weexInstance.rootView;
@@ -766,6 +772,9 @@ WX_EXPORT_METHOD(@selector(setTextFormatter:))
     if (movedUp) {
         CGFloat inputOffset = inputFrame.size.height - (rootViewFrame.size.height - inputFrame.origin.y);
         CGFloat offset = inputFrame.origin.y-(rootViewFrame.size.height-_keyboardSize.height- (inputOffset > 0 ? inputFrame.size.height - inputOffset : inputFrame.size.height)) + _upriseOffset;
+        if (iPhoneXSeries) {
+            offset-= 34;
+        }
         if (offset > 0) {
             rect = (CGRect){
                 .origin.x = 0.f,
@@ -774,7 +783,13 @@ WX_EXPORT_METHOD(@selector(setTextFormatter:))
             };
         }
     }
-    self.weexInstance.rootView.frame = rect;
+    if ([[CustomWeexSDKManager getSoftInputMode] isEqualToString:@"nothing"]) {
+        //若键盘盖住输入框，页面不会自动上移
+    }else{
+        //若键盘盖住输入框，页面会自动上移
+        self.weexInstance.rootView.frame = rect;
+    }
+    //self.weexInstance.rootView.frame = rect;
 }
 
 #pragma mark textview Delegate

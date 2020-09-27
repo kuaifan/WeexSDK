@@ -159,4 +159,7 @@ typedef enum WXCoreDirection WXCoreDirection;
 
 - (void)layoutDirectionDidChanged:(BOOL)isRTL;
 
+//eeui dev
+- (void)_fillCSSNode:(NSDictionary *)styles isUpdate:(BOOL)isUpdate;
+
 @end

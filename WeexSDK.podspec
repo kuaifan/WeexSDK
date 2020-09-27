@@ -32,6 +32,7 @@ Pod::Spec.new do |s|
   s.source =  { :path => '.' }
 
   s.source_files = 'ios/sdk/WeexSDK/Sources/**/*.{h,m,mm,c,cpp,cc}',
+                    'ios/Custom/*.{h,m,mm,c,cpp,cc}',
                     'weex_core/Source/base/**/*.{h,hpp,m,mm,c,cpp,cc}',
                     'weex_core/Source/core/**/*.{h,hpp,m,mm,c,cpp,cc}',
                     'weex_core/Source/wson/**/*.{h,hpp,m,mm,c,cpp,cc}',
@@ -120,7 +121,7 @@ Pod::Spec.new do |s|
   s.prefix_header_file = 'ios/sdk/WeexSDK/Sources/Supporting Files/WeexSDK-Prefix.pch'
 
   s.xcconfig = { "OTHER_LINK_FLAG" => '$(inherited) -ObjC' }
-  s.pod_target_xcconfig = { 'USER_HEADER_SEARCH_PATHS' => '${PODS_TARGET_SRCROOT}/weex_core/Source/ ${PROJECT_DIR}/../../../weex_core/Source',
+  s.pod_target_xcconfig = { 'USER_HEADER_SEARCH_PATHS' => '${PODS_TARGET_SRCROOT}/WeexSDK/weex_core/Source/ ${PROJECT_DIR}/../../../../plugins/eeui/WeexSDK/weex_core/Source',
     'GCC_PREPROCESSOR_DEFINITIONS' => 'OS_IOS=1' }
 
   s.frameworks = 'CoreMedia','MediaPlayer','AVFoundation','AVKit','JavaScriptCore','GLKit','OpenGLES','CoreText','QuartzCore','CoreGraphics'

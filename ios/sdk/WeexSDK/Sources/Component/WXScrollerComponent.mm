@@ -561,6 +561,7 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
     }
 }
 
+//eeui dev
 - (void)scrollToComponent:(WXComponent *)component withOffset:(CGFloat)offset animated:(BOOL)animated
 {
     UIScrollView *scrollView = (UIScrollView *)self.view;
@@ -586,7 +587,9 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
         }
         contentOffetX += offset * scaleFactor;
         
-        if (scrollView.contentSize.width >= scrollView.frame.size.width && contentOffetX > scrollView.contentSize.width - scrollView.frame.size.width) {
+        if (scrollView.contentSize.width < scrollView.frame.size.width) {
+            contentOffset.x = 0;
+        }else if (scrollView.contentSize.width >= scrollView.frame.size.width && contentOffetX > scrollView.contentSize.width - scrollView.frame.size.width) {
             contentOffset.x = scrollView.contentSize.width - scrollView.frame.size.width;
         } else {
             contentOffset.x = contentOffetX;
@@ -595,7 +598,9 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
         CGFloat contentOffetY = [component.supercomponent.view convertPoint:component.view.frame.origin toView:self.view].y;
         contentOffetY += offset * scaleFactor;
         
-        if (scrollView.contentSize.height >= scrollView.frame.size.height && contentOffetY > scrollView.contentSize.height - scrollView.frame.size.height) {
+        if (scrollView.contentSize.height < scrollView.frame.size.height) {
+            contentOffset.y = 0;
+        }else if (scrollView.contentSize.height >= scrollView.frame.size.height && contentOffetY > scrollView.contentSize.height - scrollView.frame.size.height) {
             contentOffset.y = scrollView.contentSize.height - scrollView.frame.size.height;
         } else {
             contentOffset.y = contentOffetY;

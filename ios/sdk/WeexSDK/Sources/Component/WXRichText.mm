@@ -30,6 +30,9 @@
 #import "WXDarkSchemeProtocol.h"
 #include <pthread/pthread.h>
 
+//eeui dev
+#import "eeuiNewPageManager.h"
+
 @interface WXRichNode : NSObject
 
 @property (nonatomic, strong) NSString  *type;
@@ -649,8 +652,11 @@ do {\
         if ([navigationHandler respondsToSelector:@selector(pushViewControllerWithParam:
                                                             completion:
                                                             withContainer:)]) {
-            [navigationHandler pushViewControllerWithParam:@{@"url":URL.absoluteString} completion:^(NSString *code, NSDictionary *responseData) {
-            } withContainer:self.weexInstance.viewController];
+            //eeui dev start
+            [[eeuiNewPageManager sharedIntstance] openPage:@{@"url": URL.absoluteString} weexInstance:self.weexInstance callback:nil];
+            //[navigationHandler pushViewControllerWithParam:@{@"url":URL.absoluteString} completion:^(NSString *code, NSDictionary *responseData) {
+            //} withContainer:self.weexInstance.viewController];
+            //eeui dev end
         } else {
             WXLogError(@"Event handler of class %@ does not respond to pushViewControllerWithParam", NSStringFromClass([navigationHandler class]));
         }
